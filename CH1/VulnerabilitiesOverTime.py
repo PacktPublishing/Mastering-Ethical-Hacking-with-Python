@@ -7,10 +7,10 @@ import csv
 ## Step 1: Collect the data
 ##
 
-vulnsPerYear = {} # array we will graph in a bar chart
-lowVulnsPerYear = {} # array we will graph in a bar chart
-mediumVulnsPerYear = {} # array we will graph in a bar chart
-highVulnsPerYear = {} # array we will graph in a bar chart
+vulnsPerYear = {} 
+lowVulnsPerYear = {} 
+mediumVulnsPerYear = {} 
+highVulnsPerYear = {} 
 
 #iterate through all json files in the current directory
 for filename in glob.glob('*.json'):
@@ -18,11 +18,13 @@ for filename in glob.glob('*.json'):
     print("Processing file %s" % (filename))
     
 
-    year = filename.split('.')[1].split('-')[-1] # we are assuming the filename format is "nvdcve-1.0-YYYY.json"
+    # we are assuming the filename format is "nvdcve-1.0-YYYY.json"
+    year = filename.split('.')[1].split('-')[-1] 
     with open(filename) as json_file:  
         data = json.load(json_file)
 
-        # we are assuming the file follows this format: https://csrc.nist.gov/schema/nvd/feed/1.0/nvd_cve_feed_json_1.0.schema
+        # we are assuming the file follows this format: 
+        # https://csrc.nist.gov/schema/nvd/feed/1.0/nvd_cve_feed_json_1.0.schema
         
         for cve in data["CVE_Items"]:
         
@@ -61,6 +63,10 @@ with open('vulnsOverTime.csv', 'wb') as csvfile:
 
     filewriter.writerow(['Year', 'Total','High','Medium','Low'])
     for y in (sorted(vulnsPerYear)):
-        filewriter.writerow([y, vulnsPerYear[y],highVulnsPerYear[y],mediumVulnsPerYear[y],lowVulnsPerYear[y]])
-        print("Number of CVEs for year %s : %s (L: %s, M: %s, H: %s)" % (y, vulnsPerYear[y], lowVulnsPerYear[y], mediumVulnsPerYear[y], highVulnsPerYear[y])) 
+        filewriter.writerow([y, vulnsPerYear[y],
+                                highVulnsPerYear[y],
+                                mediumVulnsPerYear[y],
+                                lowVulnsPerYear[y]])
+        print("Number of CVEs for year %s : %s (L: %s, M: %s, H: %s)" % 
+            (y, vulnsPerYear[y], lowVulnsPerYear[y], mediumVulnsPerYear[y], highVulnsPerYear[y])) 
     
